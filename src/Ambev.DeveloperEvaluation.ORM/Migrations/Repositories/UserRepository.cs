@@ -2,7 +2,7 @@
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ambev.DeveloperEvaluation.ORM.Repositories;
+namespace Ambev.DeveloperEvaluation.ORM.Migrations.Repositories;
 
 /// <summary>
 /// Implementation of IUserRepository using Entity Framework Core
@@ -41,7 +41,7 @@ public class UserRepository : IUserRepository
     /// <returns>The user if found, null otherwise</returns>
     public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Users.FirstOrDefaultAsync(o=> o.Id == id, cancellationToken);
+        return await _context.Users.FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
     }
 
     /// <summary>
