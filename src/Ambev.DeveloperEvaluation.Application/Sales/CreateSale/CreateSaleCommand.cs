@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentResults;
+using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 
@@ -15,7 +16,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 /// <see cref="AbstractValidator{T}"/> to ensure that the fields are correctly 
 /// populated and follow the required rules.
 /// </remarks>
-public class CreateSaleCommand : IRequest<CreateSaleResult>
+public class CreateSaleCommand : IRequest<Result<CreateSaleResult>>
 {
     /// <summary>
     /// Gets or sets the customer of the sale to be created.

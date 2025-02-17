@@ -10,9 +10,15 @@ public class Sale : BaseEntity
 
     public long Number { get; set; }
     public Guid CustomerId { get; private set; }
-    public decimal TotalAmount { get; private set; }
     public Guid BranchId { get; private set; }
+    public decimal TotalAmount { get; private set; }
     public decimal Discount { get; private set; }
     public bool Cancelled { get; private set; }
     public IReadOnlyCollection<SaleItem> Items => _items.AsReadOnly();
+
+    public void AddItem(Guid productId, int quantity, decimal price)
+    {
+        // TODO: validar se o produto já existe
+        _items.Add(new SaleItem(productId, quantity, price));
+    }
 }

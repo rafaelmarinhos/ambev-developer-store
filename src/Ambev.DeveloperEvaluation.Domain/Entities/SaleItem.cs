@@ -9,4 +9,12 @@ public class SaleItem : BaseEntity
     public int Quantity { get; private set; }
     public decimal Price { get; private set; }
     public decimal TotalAmount { get; private set; }
+
+    public SaleItem(Guid productId, int quantity, decimal price)
+    {
+        ProductId = productId;
+        Quantity = quantity;
+        Price = price;
+        TotalAmount = quantity * price;
+    }
 }

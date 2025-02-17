@@ -1,7 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
-using FluentValidation;
+using FluentResults;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
@@ -9,7 +9,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 /// <summary>
 /// Handler for processing CreateSaleCommand requests
 /// </summary>
-public class CreateSaleCommandHandler : IRequestHandler<CreateSaleCommand, CreateSaleResult>
+public class CreateSaleCommandHandler : IRequestHandler<CreateSaleCommand, Result<CreateSaleResult>>
 {
     private readonly ISaleRepository _saleRepository;
     private readonly IMapper _mapper;
@@ -31,7 +31,7 @@ public class CreateSaleCommandHandler : IRequestHandler<CreateSaleCommand, Creat
     /// <param name="command">The CreateSale command</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The created sale details</returns>
-    public async Task<CreateSaleResult> Handle(CreateSaleCommand command, CancellationToken cancellationToken)
+    public async Task<Result<CreateSaleResult>> Handle(CreateSaleCommand command, CancellationToken cancellationToken)
     {
         // Validate command
         var validator = new CreateSaleCommandValidator();
@@ -39,17 +39,25 @@ public class CreateSaleCommandHandler : IRequestHandler<CreateSaleCommand, Creat
 
         if (!validationResult.IsValid)
         {
-            throw new ValidationException(validationResult.Errors);
+            var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+            return Result.Fail(errors);
         }
 
         // Map command to entity
         var sale = _mapper.Map<Sale>(command);
 
+        // Add itens do sale
+        foreach (var item in command.Items)
+        {
+            sale.AddItem(item.ProductId, item.Quantity, item.Price);
+        }
+
         // Repository operation
         var createdSale = await _saleRepository.CreateAsync(sale, cancellationToken);
-        
+
         // Map created sale to result and return
         var result = _mapper.Map<CreateSaleResult>(createdSale);
-        return result;
+
+        return Result.Ok(result);
     }
 }

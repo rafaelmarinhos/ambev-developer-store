@@ -31,24 +31,72 @@ public class CreateSaleHandlerUnitTests
     }
 
     /// <summary>
-    /// Tests that handle fails when receive a invalid command
+    /// Tests that handle fails when receive a invalid customerId
     /// </summary>
-    [Fact(DisplayName = "Given an invalid command, When handling request, Then should throw ValidationException")]
-    public async Task Given_An_Invalid_Command_When_Handling_Request_Then_Should_Throw_ValidationException()
+    [Fact(DisplayName = "Given an invalid customerId, When handling request, Then should throw Result.Fail")]
+    public async Task Given_An_Invalid_Customer_When_Handling_Request_Then_Should_Return_Result_Fail()
     {
         // Given
         var command = new CreateSaleCommand
         {
-            CustomerId = Guid.Empty, // Invalid customerId
+            CustomerId = Guid.Empty,
             BranchId = Guid.NewGuid(),
             Items = [new() { ProductId = Guid.NewGuid(), Quantity = 1, Price = 10.0m }]
         };
 
         // When
-        var result = () => _handler.Handle(command, CancellationToken.None);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Then
-        await result.Should().ThrowAsync<ValidationException>();
+        result.IsSuccess.Should().BeFalse();
+        result.IsFailed.Should().BeTrue();
+        result.Errors[0].Message.Should().BeEquivalentTo("The field Customer is required.");
+    }
+
+    /// <summary>
+    /// Tests that handle fails when receive a invalid branchId
+    /// </summary>
+    [Fact(DisplayName = "Given an invalid branchId, When handling request, Then should throw Result.Fail")]
+    public async Task Given_An_Invalid_Branch_When_Handling_Request_Then_Should_Return_Result_Fail()
+    {
+        // Given
+        var command = new CreateSaleCommand
+        {
+            CustomerId = Guid.NewGuid(),
+            BranchId = Guid.Empty,
+            Items = [new() { ProductId = Guid.NewGuid(), Quantity = 1, Price = 10.0m }]
+        };
+
+        // When
+        var result = await _handler.Handle(command, CancellationToken.None);
+
+        // Then
+        result.IsSuccess.Should().BeFalse();
+        result.IsFailed.Should().BeTrue();
+        result.Errors[0].Message.Should().BeEquivalentTo("The field Branch is required.");
+    }
+
+    /// <summary>
+    /// Tests that handle fails when receive a invalid items
+    /// </summary>
+    [Fact(DisplayName = "Given an invalid items, When handling request, Then should throw Result.Fail")]
+    public async Task Given_An_Invalid_Items_When_Handling_Request_Then_Should_Return_Result_Fail()
+    {
+        // Given
+        var command = new CreateSaleCommand
+        {
+            CustomerId = Guid.NewGuid(),
+            BranchId = Guid.NewGuid(),
+            Items = []
+        };
+
+        // When
+        var result = await _handler.Handle(command, CancellationToken.None);
+
+        // Then
+        result.IsSuccess.Should().BeFalse();
+        result.IsFailed.Should().BeTrue();
+        result.Errors[0].Message.Should().BeEquivalentTo("The sale must have at least one item.");
     }
 
     /// <summary>
@@ -126,8 +174,8 @@ public class CreateSaleHandlerUnitTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(expectedResult, result);
+        result.IsSuccess.Should().BeTrue();
+        result.IsFailed.Should().BeFalse();
         _mapper.Received(1).Map<CreateSaleResult>(sale);
     }
 
@@ -156,9 +204,9 @@ public class CreateSaleHandlerUnitTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(expectedResult, result);
-        Assert.Equal(101010, expectedResult.Number);
+        result.IsSuccess.Should().BeTrue();
+        result.IsFailed.Should().BeFalse();
+        result.Value.Number.Should().Be(101010);
         _mapper.Received(1).Map<CreateSaleResult>(sale);
     }
 }
