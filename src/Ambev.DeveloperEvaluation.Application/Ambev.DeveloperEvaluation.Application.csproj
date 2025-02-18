@@ -4,6 +4,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Sales\CreateSale\wnnwttmr.pmj~" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Ambev.DeveloperEvaluation.Domain\Ambev.DeveloperEvaluation.Domain.csproj" />
@@ -17,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Sales\GetSale\" />
     <Folder Include="Sales\UpdateSale\" />
   </ItemGroup>
 

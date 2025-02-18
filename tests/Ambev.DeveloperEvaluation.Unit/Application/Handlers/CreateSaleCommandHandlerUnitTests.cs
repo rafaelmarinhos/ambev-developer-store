@@ -13,17 +13,17 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Handlers;
 /// <summary>
 /// Contains unit tests for the <see cref="CreateSaleHandler"/> class.
 /// </summary>
-public class CreateSaleHandlerUnitTests
+public class CreateSaleCommandHandlerUnitTests
 {
     private readonly ISaleRepository _saleRepository;
     private readonly IMapper _mapper;
     private readonly CreateSaleCommandHandler _handler;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CreateSaleHandlerUnitTests"/> class.
+    /// Initializes a new instance of the <see cref="CreateSaleCommandHandlerUnitTests"/> class.
     /// Sets up the test dependencies and creates fake data generators.
     /// </summary>
-    public CreateSaleHandlerUnitTests()
+    public CreateSaleCommandHandlerUnitTests()
     {
         _saleRepository = Substitute.For<ISaleRepository>();
         _mapper = Substitute.For<IMapper>();
@@ -194,7 +194,7 @@ public class CreateSaleHandlerUnitTests
         };
 
         var sale = new Sale();
-        var expectedResult = CreateSaleHandlerTestData.GenerateCreateSaleResult();
+        var expectedResult = SaleHandlerTestData.GenerateCreateSaleResult();
 
         _mapper.Map<Sale>(command).Returns(sale);
         _saleRepository.CreateAsync(Arg.Any<Sale>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(sale));

@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+using FluentAssertions;
 using FluentValidation.TestHelper;
 using Xunit;
 
@@ -32,6 +33,7 @@ public class CreateSaleCommandValidatorTests
         var result = _validator.TestValidate(command);
 
         result.ShouldHaveValidationErrorFor(x => x.CustomerId);
+        result.Errors[0].ErrorMessage.Should().BeEquivalentTo("The field Customer is required.");
     }
 
     /// <summary>
@@ -50,6 +52,7 @@ public class CreateSaleCommandValidatorTests
         var result = _validator.TestValidate(command);
 
         result.ShouldHaveValidationErrorFor(x => x.BranchId);
+        result.Errors[0].ErrorMessage.Should().BeEquivalentTo("The field Branch is required.");
     }
 
     /// <summary>
@@ -68,6 +71,7 @@ public class CreateSaleCommandValidatorTests
         var result = _validator.TestValidate(command);
 
         result.ShouldHaveValidationErrorFor(x => x.Items);
+        result.Errors[0].ErrorMessage.Should().BeEquivalentTo("The sale must have at least one item.");
     }
 
     /// <summary>
