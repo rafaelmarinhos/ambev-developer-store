@@ -9,12 +9,7 @@ public class CreateSaleCommandValidator : AbstractValidator<CreateSaleCommand>
 {
     /// <summary>
     /// Initializes a new instance of the CreateSaleCommandValidator with defined validation rules.
-    /// </summary>
-    /// <remarks>
-    /// Validation rules include:
-    /// - CustomerId: Required
-    /// - BranchId: Required
-    /// </remarks>
+    /// </summary>    
     public CreateSaleCommandValidator()
     {
         RuleFor(sale => sale.CustomerId)
@@ -36,12 +31,7 @@ public class CreateSaleCommandValidator : AbstractValidator<CreateSaleCommand>
 
     /// <summary>
     /// Initializes a new instance of the CreateSaleItemValidator with defined validation rules.
-    /// </summary>
-    /// <remarks>
-    /// Validation rules include:
-    /// - CustomerId: Required
-    /// - BranchId: Required
-    /// </remarks>
+    /// </summary>    
     public class CreateSaleItemValidator : AbstractValidator<CreateSaleItemDto>
     {
         public CreateSaleItemValidator()

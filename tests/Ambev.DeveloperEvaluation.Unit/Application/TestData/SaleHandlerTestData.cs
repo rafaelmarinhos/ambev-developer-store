@@ -1,6 +1,7 @@
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Bogus;
+using Castle.Core.Resource;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.TestData;
 
@@ -31,5 +32,21 @@ public static class SaleHandlerTestData
             Id = faker.Random.Guid(),
             Number = faker.Random.Long(),
         };
+    }
+
+    public static Sale GenerateSaleWithItems()
+    {
+        var faker = new Faker();
+
+        var sale = new Sale()
+        {
+            Id = faker.Random.Guid(),
+            CustomerId = faker.Random.Guid(),
+            BranchId = faker.Random.Guid(),
+            Number = faker.Random.Long()
+        };
+
+        sale.AddItem(faker.Random.Guid(), 10, 100);
+        return sale;
     }
 }

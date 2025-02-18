@@ -24,11 +24,11 @@ public class GetSaleCommandHandler : IRequestHandler<GetSaleCommand, Result<GetS
         _mapper = mapper;
     }
 
-    public async Task<Result<GetSaleResult>> Handle(GetSaleCommand request, CancellationToken cancellationToken)
+    public async Task<Result<GetSaleResult>> Handle(GetSaleCommand command, CancellationToken cancellationToken)
     {
         // Validate command
         var validator = new GetSaleCommandValidator();
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
 
         if (!validationResult.IsValid)
         {
@@ -37,12 +37,12 @@ public class GetSaleCommandHandler : IRequestHandler<GetSaleCommand, Result<GetS
         }
 
         // Repository operation
-        var sale = await _saleRepository.GetByIdAsync(request.Id, cancellationToken);
+        var sale = await _saleRepository.GetByIdAsync(command.Id, cancellationToken);
 
         // Validated if sale exists
         if (sale == null)
         {
-            return Result.Fail($"Sale with ID {request.Id} not found.");
+            return Result.Fail($"Sale with ID {command.Id} not found.");
         }
 
         // Map found sale to result
