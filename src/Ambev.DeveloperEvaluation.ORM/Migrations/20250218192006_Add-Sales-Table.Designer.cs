@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ambev.DeveloperEvaluation.ORM.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    [Migration("20250218185711_AddIsCanceledItemColumn")]
-    partial class AddIsCanceledItemColumn
+    [Migration("20250218192006_Add-Sales-Table")]
+    partial class AddSalesTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
