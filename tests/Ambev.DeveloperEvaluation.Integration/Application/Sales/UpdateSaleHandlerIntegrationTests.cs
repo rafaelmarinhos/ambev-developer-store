@@ -276,4 +276,91 @@ public class UpdateSaleHandlerIntegrationTests : IClassFixture<IntegrationTestFi
         updatedSaleResult.Value.Items.FirstOrDefault(f => f.ProductId == SaleHandlerTestData.Product001)!.Quantity.Should().Be(4);
         updatedSaleResult.Value.Items.FirstOrDefault(f => f.ProductId == SaleHandlerTestData.Product001)!.Price.Should().Be(25);
     }
+
+    /// <summary>
+    /// Tests that the command will be handled correcty by mediatR pipeline and calculate total amount and discounts
+    /// </summary>
+    [Fact(DisplayName = "Given an valid command, When handling request, Then should create a new sale on DB and calculate total amount and discounts")]
+    public async Task Handle_ValidCommand_ReturnsResultOkWithTotalAmountAndDiscounts()
+    {
+        // Given
+        using var scope = _serviceProvider.CreateScope();
+        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+        // When
+
+        // Create sale
+        var createSaleCommand = SaleHandlerTestData.GenerateCreateSaleCommand();
+
+        // amount = 30, discount = 0
+        var createSaleProduct_01 = new CreateSaleItemDto()
+        {
+            ProductId = SaleHandlerTestData.Product001,
+            Quantity = 3,
+            Price = 10
+        };
+
+        // amount = 90, discount = 10% = $ 9,00
+        var createSaleProduct_02 = new CreateSaleItemDto()
+        {
+            ProductId = SaleHandlerTestData.Product002,
+            Quantity = 9,
+            Price = 10
+        };
+
+        createSaleCommand.Items.Add(createSaleProduct_01);
+        createSaleCommand.Items.Add(createSaleProduct_02);
+
+        var createSaleResult = await mediator.Send(createSaleCommand, CancellationToken.None);
+
+        createSaleResult.IsFailed.Should().BeFalse();
+        createSaleResult.IsSuccess.Should().BeTrue();
+        createSaleResult.Value.TotalItems.Should().Be(2);
+        createSaleResult.Value.TotalAmount.Should().Be(120);
+        createSaleResult.Value.Discount.Should().Be(9);
+
+        // Update sale
+        var updateSaleCommand = SaleHandlerTestData.GenerateUpdateSaleCommand(createSaleResult.Value.Id);
+
+        // Update product_01
+        // amount = 100, discount = 10% = $ 10,00
+        var updateSaleProduct_01 = new UpdateSaleItemDto()
+        {
+            ProductId = SaleHandlerTestData.Product001,
+            Quantity = 5,
+            Price = 20
+        };
+
+        // Cancel product_02
+        // Calc will not consider this product because i'ts canceled
+        var updateSaleProduct_02 = new UpdateSaleItemDto()
+        {
+            ProductId = SaleHandlerTestData.Product002,
+            Quantity = 9,
+            Price = 20,
+            IsCanceled = true
+        };
+
+        // Add product_03
+        // amount = 375, discount = 20% = $ 75,00
+        var updateSaleProduct_03 = new UpdateSaleItemDto()
+        {
+            ProductId = SaleHandlerTestData.Product003,
+            Quantity = 15,
+            Price = 25
+        };
+
+        updateSaleCommand.Items.Add(updateSaleProduct_01);
+        updateSaleCommand.Items.Add(updateSaleProduct_02);
+        updateSaleCommand.Items.Add(updateSaleProduct_03);
+
+        var updatedSaleResult = await mediator.Send(updateSaleCommand, CancellationToken.None);
+
+        // Then
+        updatedSaleResult.IsFailed.Should().BeFalse();
+        updatedSaleResult.IsSuccess.Should().BeTrue();
+        updatedSaleResult.Value.TotalItems.Should().Be(3);
+        updatedSaleResult.Value.TotalAmount.Should().Be(475);
+        updatedSaleResult.Value.Discount.Should().Be(85);
+    }
 }

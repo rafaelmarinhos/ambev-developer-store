@@ -54,6 +54,12 @@ public class UpdateSaleCommandHandler : IRequestHandler<UpdateSaleCommand, Resul
         // Operations with items
         foreach (var commandItem in command.Items)
         {
+            // Maximum limit: 20 items per product
+            if (commandItem.Quantity > 20)
+            {
+                return Result.Fail("It's not possible to add above 20 identical items.");
+            }
+
             var saleItem = sale.Items.FirstOrDefault(f => f.ProductId == commandItem.ProductId);
 
             // If item not exists, then add
@@ -73,8 +79,6 @@ public class UpdateSaleCommandHandler : IRequestHandler<UpdateSaleCommand, Resul
             // If item exists and is not canceled, then just update
             saleItem.Update(commandItem.Quantity, commandItem.Price);
         }
-
-        sale.CalculateTotalAmount();
 
         // Repository operation
         var updatedSale = await _saleRepository.UpdateAsync(sale, cancellationToken);

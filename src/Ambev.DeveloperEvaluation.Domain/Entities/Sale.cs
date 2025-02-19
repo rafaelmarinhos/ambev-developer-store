@@ -15,19 +15,40 @@ public class Sale : BaseEntity
     public decimal Discount { get; private set; }
     public bool Cancelled { get; private set; }
     public IReadOnlyCollection<SaleItem> Items => _items.AsReadOnly();
+
+    public void AddItem(SaleItem item)
+    {
+        _items.Add(new SaleItem(item.ProductId, item.Quantity, item.Price));
+        CalculateTotalDiscount();
+    }
+
     public void AddItem(Guid productId, int quantity, decimal price)
     {
-        // TODO: validar se o produto já existe
         _items.Add(new SaleItem(productId, quantity, price));
+        CalculateTotalDiscount();
     }
 
     public void CancelItem(Guid productId)
     {
-        _items.FirstOrDefault(x => x.ProductId == productId)!.Cancel();        
+        _items.FirstOrDefault(x => x.ProductId == productId)!.Cancel();
+        CalculateTotalDiscount();
     }
 
-    public void CalculateTotalAmount()
+    public void UpdateItem(Guid productId, int quantity, decimal price)
     {
-        TotalAmount = 100;
+        var item = _items.FirstOrDefault(x => x.ProductId == productId)!;
+        item.Update(quantity, price);
+        CalculateTotalDiscount();
+    }
+
+    private void CalculateTotalDiscount()
+    {
+        Discount = _items.Where(f => !f.IsCanceled).Sum(f => f.Discount);
+        CalculateTotalAmount();
+    }
+
+    private void CalculateTotalAmount()
+    {
+        TotalAmount = _items.Where(f => !f.IsCanceled).Sum(f => f.TotalAmount);
     }
 }

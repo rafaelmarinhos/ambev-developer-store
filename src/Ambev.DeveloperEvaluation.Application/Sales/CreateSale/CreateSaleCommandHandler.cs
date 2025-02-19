@@ -49,6 +49,12 @@ public class CreateSaleCommandHandler : IRequestHandler<CreateSaleCommand, Resul
         // Add itens do sale
         foreach (var item in command.Items)
         {
+            // Maximum limit: 20 items per product
+            if (item.Quantity > 20)
+            {
+                return Result.Fail("It's not possible to add above 20 identical items.");
+            }
+
             sale.AddItem(item.ProductId, item.Quantity, item.Price);
         }
 
