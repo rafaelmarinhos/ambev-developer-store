@@ -37,6 +37,20 @@ public class CreateSaleCommand : IRequest<Result<CreateSaleResult>>
 /// <summary>
 /// DTO for sale items in a CreateSaleCommand.
 /// </summary>
-public class CreateSaleItemDto : SaleItemDTO
+public class CreateSaleItemDto
 {
+    /// <summary>
+    /// Gets or sets the product ID.
+    /// </summary>
+    public Guid ProductId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the quantity of the product.
+    /// </summary>
+    public int Quantity { get; set; }
+
+    /// <summary>
+    /// Gets or sets the price of the product at the time of sale.
+    /// </summary>
+    public decimal Price { get; set; }
 }

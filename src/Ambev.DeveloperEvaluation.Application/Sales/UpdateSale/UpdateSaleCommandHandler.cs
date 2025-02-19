@@ -77,7 +77,7 @@ public class UpdateSaleCommandHandler : IRequestHandler<UpdateSaleCommand, Resul
             }
 
             // If item exists and is not canceled, then just update
-            saleItem.Update(commandItem.Quantity, commandItem.Price);
+            sale.UpdateItem(commandItem.ProductId, commandItem.Quantity, commandItem.Price);            
         }
 
         // Repository operation
