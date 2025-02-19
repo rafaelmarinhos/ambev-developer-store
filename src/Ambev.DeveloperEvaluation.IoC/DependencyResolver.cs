@@ -1,5 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.IoC.ModuleInitializers;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Npgsql;
 
 namespace Ambev.DeveloperEvaluation.IoC;
 

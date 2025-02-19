@@ -9,4 +9,27 @@ public class SaleItem : BaseEntity
     public int Quantity { get; private set; }
     public decimal Price { get; private set; }
     public decimal TotalAmount { get; private set; }
+    public bool IsCanceled { get; private set; } = false;
+
+    public SaleItem(Guid productId, int quantity, decimal price)
+    {        
+        ProductId = productId;
+        Quantity = quantity;
+        Price = price;
+        TotalAmount = quantity * price;
+        IsCanceled = false;        
+    }
+
+    public void Cancel()
+    {
+        IsCanceled = true;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Update(int quantity, decimal price)
+    {
+        Quantity = quantity;
+        Price = price;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }
