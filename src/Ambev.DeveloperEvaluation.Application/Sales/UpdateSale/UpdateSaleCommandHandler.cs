@@ -54,7 +54,7 @@ public class UpdateSaleCommandHandler : IRequestHandler<UpdateSaleCommand, Resul
         // Operations with items
         foreach (var commandItem in command.Items)
         {
-            var saleItem = sale.Items.FirstOrDefault(f => f.Id == commandItem.ProductId);
+            var saleItem = sale.Items.FirstOrDefault(f => f.ProductId == commandItem.ProductId);
 
             // If item not exists, then add
             if (saleItem is null)
@@ -73,6 +73,8 @@ public class UpdateSaleCommandHandler : IRequestHandler<UpdateSaleCommand, Resul
             // If item exists and is not canceled, then just update
             saleItem.Update(commandItem.Quantity, commandItem.Price);
         }
+
+        sale.CalculateTotalAmount();
 
         // Repository operation
         var updatedSale = await _saleRepository.UpdateAsync(sale, cancellationToken);

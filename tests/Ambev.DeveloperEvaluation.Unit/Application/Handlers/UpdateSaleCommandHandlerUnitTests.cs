@@ -35,7 +35,7 @@ public class UpdateSaleCommandHandlerUnitTests
     /// Tests that handle fails when receive a invalid Id
     /// </summary>
     [Fact(DisplayName = "Given an invalid Id, When handling request, Then should throw Result.Fail")]
-    public async Task Given_An_Invalid_Id_When_Handling_Request_Then_Should_Return_Result_Fail()
+    public async Task Handle_InvalidCommandWithInvalidId_ReturnsResultFail()
     {
         // Given
         var command = new UpdateSaleCommand
@@ -57,7 +57,7 @@ public class UpdateSaleCommandHandlerUnitTests
     /// Tests that handle fails when sale is not found by Id
     /// </summary>
     [Fact(DisplayName = "Given an non-existent Id, When handling request, Then should throw Result.Fail")]
-    public async Task Given_An_Non_Existent_Id_When_Handling_Request_Then_Should_Return_Result_Fail()
+    public async Task Handle_InvalidCommandNoExistentId_ReturnsResultFail()
     {
         // Given
         var id = Guid.NewGuid();
@@ -82,7 +82,7 @@ public class UpdateSaleCommandHandlerUnitTests
     /// Tests that handle add a new product when productId not exists in the sale
     /// </summary>
     [Fact(DisplayName = "Given a valid command with a new product, When handling request, Then should add the product and return Result.Ok")]
-    public async Task Given_A_Valid_Command_When_Handling_Request_Then_Should_Add_The_Product_And_Return_Result_Ok()
+    public async Task Handle_ValidCommand_ReturnsResultOk()
     {
         // Given
         var id = Guid.NewGuid();

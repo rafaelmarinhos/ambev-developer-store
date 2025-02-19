@@ -32,23 +32,8 @@ public class UpdateSaleCommand : IRequest<Result<UpdateSaleResult>>
 /// <summary>
 /// DTO for sale items in a UpdateSaleCommand.
 /// </summary>
-public class UpdateSaleItemDto
+public class UpdateSaleItemDto : SaleItemDTO
 {
-    /// <summary>
-    /// Gets or sets the product ID.
-    /// </summary>
-    public Guid ProductId { get; set; }
-
-    /// <summary>
-    /// Gets or sets the quantity of the product.
-    /// </summary>
-    public int Quantity { get; set; }
-
-    /// <summary>
-    /// Gets or sets the price of the product at the time of sale.
-    /// </summary>
-    public decimal Price { get; set; }
-
     /// <summary>
     /// Gets or sets the status of the product: Canceled/Not Canceled
     /// </summary>

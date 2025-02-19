@@ -34,7 +34,7 @@ public class CreateSaleCommandHandlerUnitTests
     /// Tests that handle fails when receive a invalid customerId
     /// </summary>
     [Fact(DisplayName = "Given an invalid customerId, When handling request, Then should throw Result.Fail")]
-    public async Task Given_An_Invalid_Customer_When_Handling_Request_Then_Should_Return_Result_Fail()
+    public async Task Handle_InvalidCommandWithInvalidCustomer_ReturnsResultFail()
     {
         // Given
         var command = new CreateSaleCommand
@@ -57,7 +57,7 @@ public class CreateSaleCommandHandlerUnitTests
     /// Tests that handle fails when receive a invalid branchId
     /// </summary>
     [Fact(DisplayName = "Given an invalid branchId, When handling request, Then should throw Result.Fail")]
-    public async Task Given_An_Invalid_Branch_When_Handling_Request_Then_Should_Return_Result_Fail()
+    public async Task Handle_InvalidCommandWithInvalidBranch_ReturnsResultFail()
     {
         // Given
         var command = new CreateSaleCommand
@@ -80,7 +80,7 @@ public class CreateSaleCommandHandlerUnitTests
     /// Tests that handle fails when receive a invalid items
     /// </summary>
     [Fact(DisplayName = "Given an invalid items, When handling request, Then should throw Result.Fail")]
-    public async Task Given_An_Invalid_Items_When_Handling_Request_Then_Should_Return_Result_Fail()
+    public async Task Handle_InvalidCommandWithInvalidItems_ReturnsResultFail()
     {
         // Given
         var command = new CreateSaleCommand
@@ -103,7 +103,7 @@ public class CreateSaleCommandHandlerUnitTests
     /// Tests that the command is mapped to sale entity successfully
     /// </summary>
     [Fact(DisplayName = "Given a valid command, When handling request, Then should map command to Sale entity")]
-    public async Task Given_A_Valid_Command_When_Handling_Request_Then_Should_Map_Command_To_Sale()
+    public async Task Handle_ValidCommandMapSale_ReturnsResultOk()
     {
         // Given
         var command = new CreateSaleCommand
@@ -128,7 +128,7 @@ public class CreateSaleCommandHandlerUnitTests
     /// Tests that CreateAsync in the sales repository is called correct
     /// </summary>
     [Fact(DisplayName = "Given a valid command, When handling request, Then should persist sale in repository")]
-    public async Task Given_A_Valid_Command_When_Handling_Request_Then_Should_Persist_Sale_In_Repository()
+    public async Task Handle_ValidCommandPersistSaleRepository_ReturnsResultOk()
     {
         // Given
         var command = new CreateSaleCommand
@@ -153,7 +153,7 @@ public class CreateSaleCommandHandlerUnitTests
     /// Tests that the sale entity is mapped to result successfully
     /// </summary>
     [Fact(DisplayName = "Given a created sale, When handling request, Then should return mapped CreateSaleResult")]
-    public async Task Given_A_Created_Sale_When_Handling_Request_Then_Should_Return_Mapped_CreateSaleResult()
+    public async Task Handle_ValidCommandMapCreateSaleResult_ReturnsResultOk()
     {
         // Arrange
         var command = new CreateSaleCommand
@@ -183,7 +183,7 @@ public class CreateSaleCommandHandlerUnitTests
     /// Tests that the sale entity is mapped to result successfully with the correct sale number
     /// </summary>
     [Fact(DisplayName = "Given a created sale, When handling request, Then should return mapped CreateSaleResult with sale number")]
-    public async Task Given_A_Created_Sale_When_Handling_Request_Then_Should_Return_Mapped_CreateSaleResult_With_Sale_Number()
+    public async Task Handle_ValidCommandMapCreateSaleResultWithSaleNumber_ReturnsResultOk()
     {
         // Arrange
         var command = new CreateSaleCommand

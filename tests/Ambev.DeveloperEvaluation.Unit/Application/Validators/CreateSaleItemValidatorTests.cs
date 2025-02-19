@@ -20,7 +20,7 @@ public class CreateSaleItemValidatorTests
     /// Tests that validation fails when productId is not present.
     /// </summary>
     [Fact(DisplayName = "Given an empty ProductId, When validating, Then should have an error")]
-    public void Given_An_Empty_ProductId_When_Validating_Then_Should_Have_Error()
+    public void Handle_InvalidCommandProductId_ReturnsError()
     {
         var item = new CreateSaleItemDto
         {
@@ -38,7 +38,7 @@ public class CreateSaleItemValidatorTests
     /// Tests that validation fails when quantity is less than one.
     /// </summary>
     [Fact(DisplayName = "Given a quantity less than one, When validating, Then should have an error")]
-    public void Given_A_Quantity_Less_Than_One_When_Validating_Then_Should_Have_Error()
+    public void Handle_InvalidCommandQuantity_ReturnsError()
     {
         var item = new CreateSaleItemDto
         {
@@ -56,7 +56,7 @@ public class CreateSaleItemValidatorTests
     /// Tests that validation fails when price is less than one.
     /// </summary>
     [Fact(DisplayName = "Given a price less than one, When validating, Then should have an error")]
-    public void Given_A_Price_Less_Than_One_When_Validating_Then_Should_Have_Error()
+    public void Handle_InvalidCommandPrice_ReturnsError()
     {
         var item = new CreateSaleItemDto
         {
@@ -74,7 +74,7 @@ public class CreateSaleItemValidatorTests
     /// Tests that validation pass when give a valid command with all fields present.
     /// </summary>
     [Fact(DisplayName = "Given a valid item, When validating, Then should not have any errors")]
-    public void Given_A_Valid_Item_When_Validating_Then_Should_Not_Have_Error()
+    public void Handle_ValidCommand_ReturnsSuccess()
     {
         var item = new CreateSaleItemDto
         {

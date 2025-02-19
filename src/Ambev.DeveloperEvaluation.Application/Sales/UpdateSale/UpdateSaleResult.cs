@@ -1,4 +1,6 @@
-﻿namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
+
+namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 
 /// <summary>
 /// Represents the response returned after successfully update a sale
@@ -12,4 +14,5 @@ public class UpdateSaleResult
     public Guid Id { get; set; }
     public long Number { get; set; }
     public int TotalItems { get; set; }
+    public IEnumerable<GetSaleItemsResult> Items { get; set; } = [];
 }

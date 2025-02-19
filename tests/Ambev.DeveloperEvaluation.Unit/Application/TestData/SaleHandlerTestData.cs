@@ -1,7 +1,6 @@
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Bogus;
-using Castle.Core.Resource;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.TestData;
 

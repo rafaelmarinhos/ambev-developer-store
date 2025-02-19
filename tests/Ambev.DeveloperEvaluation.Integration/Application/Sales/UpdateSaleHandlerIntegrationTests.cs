@@ -1,6 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
 using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
+using Ambev.DeveloperEvaluation.Integration.TestData;
 using FluentAssertions;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +29,7 @@ public class UpdateSaleHandlerIntegrationTests : IClassFixture<IntegrationTestFi
     /// Tests that the command will be handled correcty by mediatR pipeline with a invalid command
     /// </summary>
     [Fact(DisplayName = "Given an invalid command, When handling request, Then should return Result.Fail with Errors")]
-    public async Task Given_An_Invalid_Command_When_Handling_Request_Then_Should_Return_Result_Fail_With_Errors()
+    public async Task Handle_InvalidCommand_ReturnsResultFail()
     {
         // Given
         using var scope = _serviceProvider.CreateScope();
@@ -56,7 +57,7 @@ public class UpdateSaleHandlerIntegrationTests : IClassFixture<IntegrationTestFi
     /// Tests that the command will be handled correcty by mediatR pipeline with a invalid command
     /// </summary>
     [Fact(DisplayName = "Given an command invalid items, When handling request, Then should return Result.Fail with Errors")]
-    public async Task Given_An_Command_With_Invalid_Items_When_Handling_Request_Then_Should_Return_Result_Fail_With_Errors()
+    public async Task Handle_InvalidCommandWithNoItems_ReturnsResultFail()
     {
         // Given
         using var scope = _serviceProvider.CreateScope();
@@ -87,7 +88,7 @@ public class UpdateSaleHandlerIntegrationTests : IClassFixture<IntegrationTestFi
     /// Tests that the command will be handled correcty by mediatR pipeline with a valid command and try to retry a different sale from DB to update
     /// </summary>
     [Fact(DisplayName = "Given an valid command, When handling request, Then should return Result.Fail for a not existent id on DB")]
-    public async Task Given_An_Valid_Command_When_Handling_Request_Then_Should_Return_Result_Fail_For_Not_Existent_Sale_By_Id()
+    public async Task Handle_ValidCommand_ReturnsResultFailSaleNotFound()
     {
         // Given
         using var scope = _serviceProvider.CreateScope();
@@ -115,55 +116,164 @@ public class UpdateSaleHandlerIntegrationTests : IClassFixture<IntegrationTestFi
     }
 
     /// <summary>
-    /// Tests that the command will be handled correcty by mediatR pipeline with a valid command and try to retry a different sale from DB to update
+    /// Tests that the command will be handled correcty by mediatR pipeline and add a new item
     /// </summary>
-    //[Fact(DisplayName = "Given an valid command, When handling request, Then should create a new sale on DB and return Result.Fail for a not existent id on DB")]
-    //public async Task Given_An_Valid_Command_When_Handling_Request_Then_Should_Create_Sale_On_DB_And_Return_Result_Fail_For_Not_Existent_Sale_By_Id()
-    //{
-    //    // 1 - Create a new sale
+    [Fact(DisplayName = "Given an valid command, When handling request, Then should create a new sale on DB and after add a new item")]
+    public async Task Handle_ValidCommand_ReturnsResultOkWithNewItem()
+    {
+        // Given
+        using var scope = _serviceProvider.CreateScope();
+        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-    //    // Given
-    //    using var scope = _serviceProvider.CreateScope();
-    //    var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+        // When
 
-    //    var createSaleCommand = new CreateSaleCommand
-    //    {
-    //        CustomerId = Guid.NewGuid(),
-    //        BranchId = Guid.NewGuid(),
-    //        Items =
-    //        [
-    //            new() { ProductId = Guid.NewGuid(), Quantity = 3, Price = 50.25m }
-    //        ]
-    //    };
+        // Create sale
+        var createSaleCommand = SaleHandlerTestData.GenerateCreateSaleCommand();
 
-    //    // When
-    //    var createSaleResult = await mediator.Send(createSaleCommand, CancellationToken.None);
+        var createSaleProduct_01 = new CreateSaleItemDto()
+        {
+            ProductId = SaleHandlerTestData.Product001,
+            Quantity = 1,
+            Price = 10
+        };
 
-    //    // Then
-    //    createSaleResult.IsSuccess.Should().BeTrue();
-    //    createSaleResult.IsFailed.Should().BeFalse();
-    //    createSaleResult.Errors.Count.Should().Be(0);
+        createSaleCommand.Items.Add(createSaleProduct_01);
 
-    //    // 2 - Get the sale on DB by a different Id
+        var createSaleResult = await mediator.Send(createSaleCommand, CancellationToken.None);
 
-    //    // Given
-    //    var id = Guid.NewGuid();
-    //    var command = new UpdateSaleCommand
-    //    {
-    //        Id = id,
-    //        Items =
-    //        [
-    //            new() { ProductId = Guid.Empty, Quantity = 0, Price = 0 }
-    //        ]
-    //    };
+        createSaleResult.IsFailed.Should().BeFalse();
+        createSaleResult.IsSuccess.Should().BeTrue();
+        createSaleResult.Value.TotalItems.Should().Be(1);
 
-    //    // When
-    //    var getSaleResult = await mediator.Send(command, CancellationToken.None);
+        // Update sale
+        var updateSaleCommand = SaleHandlerTestData.GenerateUpdateSaleCommand(createSaleResult.Value.Id);
 
-    //    // Then
-    //    getSaleResult.IsFailed.Should().BeTrue();
-    //    getSaleResult.IsSuccess.Should().BeFalse();
-    //    getSaleResult.Errors.Count.Should().Be(1);
-    //    getSaleResult.Errors[0].Message.Should().BeEquivalentTo($"Sale with ID {id} not found.");
-    //}
+        var updateSaleProduct_01 = new UpdateSaleItemDto()
+        {
+            ProductId = SaleHandlerTestData.Product001,
+            Quantity = 1,
+            Price = 10
+        };
+
+        var updateSaleProduct_02 = new UpdateSaleItemDto()
+        {
+            ProductId = SaleHandlerTestData.Product002,
+            Quantity = 2,
+            Price = 20
+        };
+
+        updateSaleCommand.Items.Add(updateSaleProduct_01);
+        updateSaleCommand.Items.Add(updateSaleProduct_02);
+
+        var updatedSaleResult = await mediator.Send(updateSaleCommand, CancellationToken.None);
+
+        // Then
+        updatedSaleResult.IsFailed.Should().BeFalse();
+        updatedSaleResult.IsSuccess.Should().BeTrue();
+        updatedSaleResult.Value.TotalItems.Should().Be(2);
+    }
+
+    /// <summary>
+    /// Tests that the command will be handled correcty by mediatR pipeline and cancel a item
+    /// </summary>
+    [Fact(DisplayName = "Given an valid command, When handling request, Then should create a new sale on DB and after cancel a item")]
+    public async Task Handle_ValidCommand_ReturnsResultOkWithItemCanceled()
+    {
+        // Given
+        using var scope = _serviceProvider.CreateScope();
+        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+        // When
+
+        // Create sale
+        var createSaleCommand = SaleHandlerTestData.GenerateCreateSaleCommand();
+
+        var createSaleProduct_01 = new CreateSaleItemDto()
+        {
+            ProductId = SaleHandlerTestData.Product001,
+            Quantity = 1,
+            Price = 10
+        };
+
+        createSaleCommand.Items.Add(createSaleProduct_01);
+
+        var createSaleResult = await mediator.Send(createSaleCommand, CancellationToken.None);
+
+        createSaleResult.IsFailed.Should().BeFalse();
+        createSaleResult.IsSuccess.Should().BeTrue();
+        createSaleResult.Value.TotalItems.Should().Be(1);
+
+        // Update sale
+        var updateSaleCommand = SaleHandlerTestData.GenerateUpdateSaleCommand(createSaleResult.Value.Id);
+
+        var updateSaleProduct_01 = new UpdateSaleItemDto()
+        {
+            ProductId = SaleHandlerTestData.Product001,
+            Quantity = 1,
+            Price = 10,
+            IsCanceled = true
+        };
+
+        updateSaleCommand.Items.Add(updateSaleProduct_01);
+
+        var updatedSaleResult = await mediator.Send(updateSaleCommand, CancellationToken.None);
+
+        // Then
+        updatedSaleResult.IsFailed.Should().BeFalse();
+        updatedSaleResult.IsSuccess.Should().BeTrue();
+        updatedSaleResult.Value.TotalItems.Should().Be(1);
+        updatedSaleResult.Value.Items.FirstOrDefault()!.IsCanceled.Should().BeTrue();
+    }
+
+    /// <summary>
+    /// Tests that the command will be handled correcty by mediatR pipeline and cancel a item
+    /// </summary>
+    [Fact(DisplayName = "Given an valid command, When handling request, Then should create a new sale on DB and after update a item")]
+    public async Task Handle_ValidCommand_ReturnsResultOkWithUpdatedItem()
+    {
+        // Given
+        using var scope = _serviceProvider.CreateScope();
+        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+        // When
+
+        // Create sale
+        var createSaleCommand = SaleHandlerTestData.GenerateCreateSaleCommand();
+
+        var createSaleProduct_01 = new CreateSaleItemDto()
+        {
+            ProductId = SaleHandlerTestData.Product001,
+            Quantity = 1,
+            Price = 10
+        };
+
+        createSaleCommand.Items.Add(createSaleProduct_01);
+
+        var createSaleResult = await mediator.Send(createSaleCommand, CancellationToken.None);
+
+        createSaleResult.IsFailed.Should().BeFalse();
+        createSaleResult.IsSuccess.Should().BeTrue();
+        createSaleResult.Value.TotalItems.Should().Be(1);
+
+        // Update sale
+        var updateSaleCommand = SaleHandlerTestData.GenerateUpdateSaleCommand(createSaleResult.Value.Id);
+
+        var updateSaleProduct_01 = new UpdateSaleItemDto()
+        {
+            ProductId = SaleHandlerTestData.Product001,
+            Quantity = 4,
+            Price = 25
+        };
+
+        updateSaleCommand.Items.Add(updateSaleProduct_01);
+
+        var updatedSaleResult = await mediator.Send(updateSaleCommand, CancellationToken.None);
+
+        // Then
+        updatedSaleResult.IsFailed.Should().BeFalse();
+        updatedSaleResult.IsSuccess.Should().BeTrue();
+        updatedSaleResult.Value.TotalItems.Should().Be(1);
+        updatedSaleResult.Value.Items.FirstOrDefault(f => f.ProductId == SaleHandlerTestData.Product001)!.Quantity.Should().Be(4);
+        updatedSaleResult.Value.Items.FirstOrDefault(f => f.ProductId == SaleHandlerTestData.Product001)!.Price.Should().Be(25);
+    }
 }

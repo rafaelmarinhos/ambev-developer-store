@@ -1,5 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
-using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using AutoMapper;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
@@ -15,6 +14,7 @@ public class UpdateSaleProfile : Profile
     public UpdateSaleProfile()
     {
         CreateMap<Sale, UpdateSaleResult>()
-            .ForMember(dest => dest.TotalItems, opt => opt.MapFrom(src => src.Items.Count));
+            .ForMember(dest => dest.TotalItems, opt => opt.MapFrom(src => src.Items.Count))
+            .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
     }
 }

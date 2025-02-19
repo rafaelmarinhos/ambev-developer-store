@@ -34,7 +34,7 @@ public class GetSaleCommandHandlerUnitTests
     /// Tests that handle fails when receive a invalid Id
     /// </summary>
     [Fact(DisplayName = "Given an invalid Id, When handling request, Then should throw Result.Fail")]
-    public async Task Given_An_Invalid_Id_When_Handling_Request_Then_Should_Return_Result_Fail()
+    public async Task Handle_InvalidCommandInvalidId_ReturnsResultFail()
     {
         // Given
         var command = new GetSaleCommand(Guid.Empty);
@@ -52,7 +52,7 @@ public class GetSaleCommandHandlerUnitTests
     /// Tests that handle fails when sale is not found by Id
     /// </summary>
     [Fact(DisplayName = "Given an non-existent Id, When handling request, Then should throw Result.Fail")]
-    public async Task Given_An_Non_Existent_Id_When_Handling_Request_Then_Should_Return_Result_Fail()
+    public async Task Handle_InvalidCommandNotExistentId_ReturnsResultFail()
     {
         // Given
         var id = Guid.NewGuid();
@@ -73,7 +73,7 @@ public class GetSaleCommandHandlerUnitTests
     /// Tests that the sale is mapped to result successfully
     /// </summary>
     [Fact(DisplayName = "Given a valid Id, When handling request, Then should map Sale to Result and return Result.Ok")]
-    public async Task Given_A_Valid_Command_When_Handling_Request_Then_Should_Map_Sale_To_Result()
+    public async Task Handle_ValidCommandMapSaleToResult_ReturnsResultOk()
     {
         // Given
         var command = new GetSaleCommand(Guid.NewGuid());

@@ -21,7 +21,7 @@ public class CreateSaleCommandValidatorTests
     /// Tests that validation fails when customerId is not present.
     /// </summary>
     [Fact(DisplayName = "Given an invalid CustomerId, When validating, Then should have an error")]
-    public void Given_An_Invalid_CustomerId_When_Validating_Then_Should_Have_Error()
+    public void Handle_InvalidCommandCustomerId_ReturnsError()
     {
         var command = new CreateSaleCommand
         {
@@ -40,7 +40,7 @@ public class CreateSaleCommandValidatorTests
     /// Tests that validation fails when branchId is not present.
     /// </summary>
     [Fact(DisplayName = "Given an invalid BranchId, When validating, Then should have an error")]
-    public void Given_An_Invalid_BranchId_When_Validating_Then_Should_Have_Error()
+    public void Handle_InvalidCommandBranchId_ReturnsError()
     {
         var command = new CreateSaleCommand
         {
@@ -59,7 +59,7 @@ public class CreateSaleCommandValidatorTests
     /// Tests that validation fails when not exists items.
     /// </summary>
     [Fact(DisplayName = "Given an empty item list, When validating, Then should have an error")]
-    public void Given_An_Empty_Item_List_When_Validating_Then_Should_Have_Error()
+    public void Handle_InvalidCommandEmptyItems_ReturnsError()
     {
         var command = new CreateSaleCommand
         {
@@ -78,7 +78,7 @@ public class CreateSaleCommandValidatorTests
     /// Tests that validation pass when give a valid command with all fields present.
     /// </summary>
     [Fact(DisplayName = "Given a valid command, When validating, Then should not have any errors")]
-    public void Given_A_Valid_Command_When_Validating_Then_Should_Not_Have_Error()
+    public void Handle_ValidCommand_ReturnsSuccess()
     {
         var command = new CreateSaleCommand
         {

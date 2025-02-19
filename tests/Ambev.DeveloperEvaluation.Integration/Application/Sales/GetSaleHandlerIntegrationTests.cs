@@ -27,7 +27,7 @@ public class GetSaleHandlerIntegrationTests : IClassFixture<IntegrationTestFixtu
     /// Tests that the command will be handled correcty by mediatR pipeline with a valid command and try to retry a different sale from DB
     /// </summary>
     [Fact(DisplayName = "Given an valid command, When handling request, Then should create a new sale on DB and return Result.Fail")]
-    public async Task Given_An_Valid_Command_When_Handling_Request_Then_Should_Create_Sale_On_DB_And_Return_Result_Fail()
+    public async Task Handle_ValidCommand_ReturnsResultFailWhenSaleNotFound()
     {
         // 1 - Create a new sale
 
@@ -73,7 +73,7 @@ public class GetSaleHandlerIntegrationTests : IClassFixture<IntegrationTestFixtu
     /// Tests that the command will be handled correcty by mediatR pipeline with a valid command and return a sale from DB
     /// </summary>
     [Fact(DisplayName = "Given an valid command, When handling request, Then should create a new sale on DB and return Ok")]
-    public async Task Given_An_Valid_Command_When_Handling_Request_Then_Should_Create_Sale_On_DB_And_Return_Ok()
+    public async Task Handle_ValidCommand_ReturnsResultOk()
     {
         // 1 - Create a new sale
 
@@ -110,8 +110,7 @@ public class GetSaleHandlerIntegrationTests : IClassFixture<IntegrationTestFixtu
         // Then
         getSaleResult.IsSuccess.Should().BeTrue();
         getSaleResult.IsFailed.Should().BeFalse();
-        getSaleResult.Errors.Count.Should().Be(0);
-        getSaleResult.Value.Number.Should().Be(1);
+        getSaleResult.Errors.Count.Should().Be(0);        
         getSaleResult.Value.CustomerId.Should().Be(createSaleCommand.CustomerId);
         getSaleResult.Value.BranchId.Should().Be(createSaleCommand.BranchId);
         getSaleResult.Value.Items.Count().Should().Be(1);

@@ -26,7 +26,7 @@ public class CreateSaleHandlerIntegrationTests : IClassFixture<IntegrationTestFi
     /// Tests that the command will be handled correcty by mediatR pipeline with a invalid command
     /// </summary>
     [Fact(DisplayName = "Given an invalid command, When handling request, Then should return Result.Fail with Errors")]
-    public async Task Given_An_Invalid_Command_When_Handling_Request_Then_Should_Return_Result_Fail_With_Errors()
+    public async Task Handle_InvalidCommand_ReturnsResultFail()
     {
         // Given
         using var scope = _serviceProvider.CreateScope();
@@ -57,7 +57,7 @@ public class CreateSaleHandlerIntegrationTests : IClassFixture<IntegrationTestFi
     /// Tests that the command will be handled correcty by mediatR pipeline with a valid command
     /// </summary>
     [Fact(DisplayName = "Given an valid command, When handling request, Then should create a new sale on DB")]
-    public async Task Given_An_Valid_Command_When_Handling_Request_Then_Should_Create_Sale_On_DB()
+    public async Task Handle_ValidCommand_ReturnsResultOk()
     {
         // Given
         using var scope = _serviceProvider.CreateScope();

@@ -21,7 +21,7 @@ public class GetSaleCommandValidatorTests
     /// Tests that validation fails when Id is not present.
     /// </summary>
     [Fact(DisplayName = "Given an invalid Id, When validating, Then should have an error")]
-    public void Given_An_Invalid_Id_When_Validating_Then_Should_Have_Error()
+    public void Handle_InvalidCommand_ReturnsError()
     {
         var command = new GetSaleCommand(Guid.Empty);
 
@@ -36,7 +36,7 @@ public class GetSaleCommandValidatorTests
     /// Tests that validation pass when give a valid command with all fields present.
     /// </summary>
     [Fact(DisplayName = "Given a valid command, When validating, Then should not have any errors")]
-    public void Given_A_Valid_Command_When_Validating_Then_Should_Not_Have_Error()
+    public void Handle_ValidCommand_ReturnsSuccess()
     {
         var command = new GetSaleCommand(Guid.NewGuid());
 

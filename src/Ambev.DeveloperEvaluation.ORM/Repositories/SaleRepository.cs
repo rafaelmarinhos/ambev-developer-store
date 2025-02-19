@@ -42,8 +42,8 @@ public class SaleRepository : ISaleRepository
     public async Task<Sale?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _context.Sales
-            .Include(o => o.Items)
-            .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
+            .Include(o => o.Items)            
+            .FirstOrDefaultAsync(o => o.Id == id, cancellationToken)  ;
     }
 
     /// <summary>
@@ -54,6 +54,19 @@ public class SaleRepository : ISaleRepository
     /// <returns>The update sale</returns>
     public async Task<Sale> UpdateAsync(Sale sale, CancellationToken cancellationToken)
     {
+        // TODO: Corrigir esta tratativa
+        foreach (var item in sale.Items)
+        {
+            if (item.UpdatedAt == null)
+            {
+                _context.SaleItems.Add(item);
+            }
+            else
+            {
+                _context.SaleItems.Update(item);
+            }
+        }
+
         _context.Sales.Update(sale);
         await _context.SaveChangesAsync(cancellationToken);
         return sale;

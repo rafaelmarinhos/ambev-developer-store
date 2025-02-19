@@ -11,4 +11,5 @@ public class CreateSaleResult
 {
     public Guid Id { get; set; }
     public long Number { get; set; }
+    public int TotalItems { get; set; }
 }

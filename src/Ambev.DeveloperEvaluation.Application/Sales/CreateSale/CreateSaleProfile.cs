@@ -20,6 +20,7 @@ public class CreateSaleProfile : Profile
             .ForMember(dest => dest.BranchId, opt => opt.MapFrom(src => src.BranchId))
             .ForMember(dest => dest.Items, opt => opt.Ignore());
 
-        CreateMap<Sale, CreateSaleResult>();
+        CreateMap<Sale, CreateSaleResult>()
+            .ForMember(dest => dest.TotalItems, opt => opt.MapFrom(src => src.Items.Count)); ;
     }
 }
