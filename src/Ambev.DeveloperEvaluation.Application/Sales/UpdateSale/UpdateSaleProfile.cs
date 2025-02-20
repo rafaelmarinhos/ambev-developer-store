@@ -16,5 +16,6 @@ public class UpdateSaleProfile : Profile
         CreateMap<Sale, UpdateSaleResult>()
             .ForMember(dest => dest.TotalItems, opt => opt.MapFrom(src => src.Items.Count))
             .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
+        CreateMap<SaleItem, UpdateSaleItemResult>();
     }
 }
