@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.Commands.CreateSale;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;

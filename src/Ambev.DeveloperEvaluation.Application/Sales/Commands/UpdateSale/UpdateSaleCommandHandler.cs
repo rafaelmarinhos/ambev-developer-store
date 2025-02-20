@@ -3,7 +3,7 @@ using AutoMapper;
 using FluentResults;
 using MediatR;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
+namespace Ambev.DeveloperEvaluation.Application.Sales.Commands.UpdateSale;
 
 /// <summary>
 /// Handler for processing UpdateSaleCommand requests
@@ -77,7 +77,7 @@ public class UpdateSaleCommandHandler : IRequestHandler<UpdateSaleCommand, Resul
             }
 
             // If item exists and is not canceled, then just update
-            sale.UpdateItem(commandItem.ProductId, commandItem.Quantity, commandItem.Price);            
+            sale.UpdateItem(commandItem.ProductId, commandItem.Quantity, commandItem.Price);
         }
 
         // Repository operation

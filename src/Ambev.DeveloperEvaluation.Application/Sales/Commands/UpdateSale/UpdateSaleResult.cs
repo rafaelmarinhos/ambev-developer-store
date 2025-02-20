@@ -1,4 +1,4 @@
-﻿namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
+﻿namespace Ambev.DeveloperEvaluation.Application.Sales.Commands.UpdateSale;
 
 /// <summary>
 /// Represents the response returned after successfully update a sale

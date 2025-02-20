@@ -1,6 +1,6 @@
 using Ambev.DeveloperEvaluation.Application.Sales;
-using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
-using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
+using Ambev.DeveloperEvaluation.Application.Sales.Commands.CreateSale;
+using Ambev.DeveloperEvaluation.Application.Sales.Commands.UpdateSale;
 using Bogus;
 using Microsoft.AspNetCore.Http;
 

@@ -1,4 +1,4 @@
-using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+using Ambev.DeveloperEvaluation.Application.Sales.Commands.CreateSale;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Bogus;
 
@@ -37,11 +37,9 @@ public static class SaleHandlerTestData
     {
         var faker = new Faker();
 
-        var sale = new Sale()
+        var sale = new Sale(faker.Random.Guid(), faker.Random.Guid())
         {
             Id = faker.Random.Guid(),
-            CustomerId = faker.Random.Guid(),
-            BranchId = faker.Random.Guid(),
             Number = faker.Random.Long()
         };
 

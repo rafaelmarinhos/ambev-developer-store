@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.Commands.GetSale;
 using FluentAssertions;
 using FluentValidation.TestHelper;
 using Xunit;

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+namespace Ambev.DeveloperEvaluation.Application.Sales.Commands.CreateSale;
 
 /// <summary>
 /// Validator for CreateSaleCommand that defines validation rules for sale creation command.

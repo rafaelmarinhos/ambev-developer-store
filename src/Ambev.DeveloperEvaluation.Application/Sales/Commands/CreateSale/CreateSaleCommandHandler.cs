@@ -4,7 +4,7 @@ using AutoMapper;
 using FluentResults;
 using MediatR;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+namespace Ambev.DeveloperEvaluation.Application.Sales.Commands.CreateSale;
 
 /// <summary>
 /// Handler for processing CreateSaleCommand requests
