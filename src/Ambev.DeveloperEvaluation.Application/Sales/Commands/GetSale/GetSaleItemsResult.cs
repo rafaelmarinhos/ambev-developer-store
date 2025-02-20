@@ -1,4 +1,4 @@
-﻿namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale;
+﻿namespace Ambev.DeveloperEvaluation.Application.Sales.Commands.GetSale;
 
 /// <summary>
 /// Items model for GetSale operation

@@ -1,9 +1,14 @@
 ﻿using Ambev.DeveloperEvaluation.Common.Validation;
+using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Domain.Common;
 
-public class BaseEntity : IComparable<BaseEntity>
+public abstract class BaseEntity : IComparable<BaseEntity>
 {
+    private readonly List<INotification> _domainEvents = [];
+
+    public IReadOnlyCollection<INotification> DomainEvents => _domainEvents.AsReadOnly();
+
     public Guid Id { get; set; }
 
     /// <summary>
@@ -36,4 +41,7 @@ public class BaseEntity : IComparable<BaseEntity>
 
         return other!.Id.CompareTo(Id);
     }
+
+    public void AddDomainEvent(INotification eventItem) => _domainEvents.Add(eventItem);    
+    public void ClearDomainEvents() => _domainEvents.Clear();
 }

@@ -3,7 +3,7 @@ using AutoMapper;
 using FluentResults;
 using MediatR;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale;
+namespace Ambev.DeveloperEvaluation.Application.Sales.Commands.GetSale;
 
 /// <summary>
 /// Handler for processing GetSaleCommand requests

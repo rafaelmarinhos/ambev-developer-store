@@ -1,9 +1,9 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using FluentAssertions;
-using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
+using Ambev.DeveloperEvaluation.Application.Sales.Commands.CreateSale;
+using Ambev.DeveloperEvaluation.Application.Sales.Commands.GetSale;
 
 namespace Ambev.DeveloperEvaluation.Integration.Application.Sales;
 

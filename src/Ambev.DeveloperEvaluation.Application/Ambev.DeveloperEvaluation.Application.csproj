@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Sales\CreateSale\wnnwttmr.pmj~" />
+    <None Remove="Sales\Commands\CreateSale\wnnwttmr.pmj~" />
   </ItemGroup>
 
   <ItemGroup>
