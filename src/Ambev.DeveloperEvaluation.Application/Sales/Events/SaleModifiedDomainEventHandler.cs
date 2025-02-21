@@ -1,5 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Events.Sales;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.Events;
 
@@ -8,9 +9,23 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.Events;
 /// </summary>
 public class SaleModifiedDomainEventHandler : INotificationHandler<SaleModifiedDomainEvent>
 {
+    private readonly ILogger<SaleModifiedDomainEventHandler> _logger;
+
+    public SaleModifiedDomainEventHandler(ILogger<SaleModifiedDomainEventHandler> logger)
+    {
+        _logger = logger;
+    }
+
     public async Task Handle(SaleModifiedDomainEvent notification, CancellationToken cancellationToken)
     {
-        Console.WriteLine($"{typeof(SaleModifiedDomainEventHandler)} | Sale modified | {notification.SaleId}");
+        // Here you can use Rebus or MassTransit to send integration events to a MessageBroker
+
+        _logger.LogInformation(
+            "{Handler} | Sale modified | Sale: {SaleId}",
+            nameof(SaleModifiedDomainEventHandler),
+            notification.SaleId
+        );
+
         await Task.CompletedTask;
     }
 }

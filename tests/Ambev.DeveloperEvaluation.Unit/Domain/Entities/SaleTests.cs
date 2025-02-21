@@ -38,6 +38,7 @@ public class SaleTests
 
         // Act        
         sale.AddItem(faker.Random.Guid(), 1, 10);
+        sale.CalculateTotals();
 
         // Assert
         sale.TotalAmount.Should().BeGreaterThan(0);
@@ -57,6 +58,7 @@ public class SaleTests
         // Act        
         sale.AddItem(faker.Random.Guid(), 1, 10);
         sale.AddItem(faker.Random.Guid(), 2, 20);
+        sale.CalculateTotals();
 
         // Assert
         sale.TotalAmount.Should().Be(50);
@@ -73,17 +75,19 @@ public class SaleTests
         // Arrange
         var sale = new Sale();
 
-        var productId_01 = new Guid();
+        var productId_01 = Guid.NewGuid();
 
         // Act        
         sale.AddItem(productId_01, 1, 10);
         sale.AddItem(faker.Random.Guid(), 2, 20);
+        sale.CalculateTotals();
 
         // Assert
         sale.TotalAmount.Should().Be(50);
 
         // Cancel item
         sale.CancelItem(productId_01);
+        sale.CalculateTotals();
 
         // Assert
         sale.TotalAmount.Should().Be(40);
@@ -100,17 +104,19 @@ public class SaleTests
         // Arrange
         var sale = new Sale();
 
-        var productId_01 = new Guid();
+        var productId_01 = Guid.NewGuid();
 
         // Act        
         sale.AddItem(productId_01, 1, 10);
         sale.AddItem(faker.Random.Guid(), 2, 20);
+        sale.CalculateTotals();
 
         // Assert
         sale.TotalAmount.Should().Be(50);
 
         // UpdateItem item
         sale.UpdateItem(productId_01, 2, 15);
+        sale.CalculateTotals();
 
         // Assert
         sale.TotalAmount.Should().Be(70);
@@ -129,20 +135,22 @@ public class SaleTests
 
         // items < 4 = no discounts
         // = $ 30,00
-        var productId_01 = new Guid();
+        var productId_01 = Guid.NewGuid();
 
         // 4 <= items >= 10 = 10%
         // = (10 * 10) - 10% = $ 90,00
-        var productId_02 = new Guid();
+        var productId_02 = Guid.NewGuid();
 
         // items <= 20
         // = (15 * 10) - 20% = $ 120,00
-        var productId_03 = new Guid();
+        var productId_03 = Guid.NewGuid();
 
         // Act        
         sale.AddItem(productId_01, 3, 10);
         sale.AddItem(productId_02, 9, 10);
         sale.AddItem(productId_03, 15, 10);
+
+        sale.CalculateTotals();
 
         // Assert
         sale.TotalAmount.Should().Be(270);

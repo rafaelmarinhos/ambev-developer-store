@@ -1,13 +1,31 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Events.Sales;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.Events;
 
+/// <summary>
+/// Handler that will be executed when an order is canceled
+/// </summary>
 public class SaleCanceledDomainEventHandler : INotificationHandler<SaleCancelledDomainEvent>
 {
+    private readonly ILogger<SaleCanceledDomainEventHandler> _logger;
+
+    public SaleCanceledDomainEventHandler(ILogger<SaleCanceledDomainEventHandler> logger)
+    {
+        _logger = logger;
+    }
+
     public async Task Handle(SaleCancelledDomainEvent notification, CancellationToken cancellationToken)
     {
-        Console.WriteLine($"{typeof(SaleCanceledDomainEventHandler)} | Sale cancelled | {notification.SaleId}");
+        // Here you can use Rebus or MassTransit to send integration events to a MessageBroker
+
+        _logger.LogInformation(
+            "{Handler} | Sale canceled | Sale: {SaleId}",
+            nameof(SaleCanceledDomainEventHandler),
+            notification.SaleId
+        );
+
         await Task.CompletedTask;
     }
 }
