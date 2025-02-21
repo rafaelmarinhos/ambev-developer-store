@@ -155,4 +155,28 @@ public class SaleTests
         sale.Items.First(f => f.ProductId == productId_02).Discount.Should().Be(9);
         sale.Items.First(f => f.ProductId == productId_03).Discount.Should().Be(30);
     }
+
+    /// <summary>
+    /// Tests that when create a new sale and cancel
+    /// </summary>
+    [Fact(DisplayName = "Id should cancel sale")]
+    public void Given_CreateSale_When_Delete_Then_MustBeCanceled()
+    {
+        var faker = new Faker();
+
+        // Arrange
+        var sale = new Sale();
+
+        // Act        
+        sale.AddItem(faker.Random.Guid(), 1, 10);
+
+        // Assert
+        sale.Cancelled.Should().BeFalse();
+
+        // Act
+        sale.Cancel();
+
+        // Assert
+        sale.Cancelled.Should().BeTrue();
+    }
 }
