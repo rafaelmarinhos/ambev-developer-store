@@ -8,6 +8,7 @@ public class GetSaleRequestProfile : Profile
 {
     public GetSaleRequestProfile()
     {
+        CreateMap<GetSaleRequest, GetSaleCommand>();
         CreateMap<GetSaleResult, GetSaleResponse>();
         CreateMap<GetSaleItemsResult, GetSaleItemsResponse>();
     }
