@@ -19,7 +19,7 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An unexpected error has occurred.");
+            _logger.LogError(ex, "An unexpected error has occurred.");            
             await HandleExceptionAsync(context);
         }
     }
