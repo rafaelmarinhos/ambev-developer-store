@@ -1,11 +1,16 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.Commands.CreateSale;
+using Ambev.DeveloperEvaluation.Application.Sales.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.ORM.Repositories;
+using Castle.Core.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
 using Testcontainers.PostgreSql;
 using Xunit;
+using ILoggerFactory = Castle.Core.Logging.ILoggerFactory;
 
 namespace Ambev.DeveloperEvaluation.Integration;
 
@@ -49,6 +54,10 @@ public class IntegrationTestFixture : IAsyncLifetime
 
         // AutoMapper
         services.AddAutoMapper(typeof(CreateSaleCommandHandler).Assembly);
+
+        // Adiciona logging
+        var loggerMock = Substitute.For<Microsoft.Extensions.Logging.ILogger>();
+        services.AddSingleton(loggerMock);
 
         ServiceProvider = services.BuildServiceProvider();
 

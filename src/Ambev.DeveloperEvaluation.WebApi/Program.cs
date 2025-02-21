@@ -72,6 +72,8 @@ public class Program
 
             app.MapControllers();
 
+            app.UseDefaultLogging();
+
             app.Run();
         }
         catch (Exception ex)

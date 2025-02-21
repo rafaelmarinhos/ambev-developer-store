@@ -58,6 +58,8 @@ public class CreateSaleCommandHandler : IRequestHandler<CreateSaleCommand, Resul
             sale.AddItem(item.ProductId, item.Quantity, item.Price);
         }
 
+        sale.CalculateTotals();
+
         // Repository operation
         var createdSale = await _saleRepository.CreateAsync(sale, cancellationToken);
 

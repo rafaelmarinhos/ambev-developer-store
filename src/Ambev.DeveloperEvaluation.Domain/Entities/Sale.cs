@@ -29,19 +29,13 @@ public class Sale : BaseEntity
     public void AddItem(Guid productId, int quantity, decimal price)
     {
         _items.Add(new SaleItem(productId, quantity, price));
-        CalculateTotalDiscount();
-
-        // Create domain event to inform that a sale was modified
-        AddDomainEvent(new SaleModifiedDomainEvent(Id));
     }
 
     public void CancelItem(Guid productId)
     {
         _items.FirstOrDefault(x => x.ProductId == productId)!.Cancel();
-        CalculateTotalDiscount();
 
-        // Create domain event to inform that a item was cancelled
-        AddDomainEvent(new SaleModifiedDomainEvent(Id));
+        // Create domain event to inform that a new item was added
         AddDomainEvent(new ItemCancelledDomainEvent(Id, productId));
     }
 
@@ -49,10 +43,6 @@ public class Sale : BaseEntity
     {
         var item = _items.FirstOrDefault(x => x.ProductId == productId)!;
         item.Update(quantity, price);
-        CalculateTotalDiscount();
-
-        // Create domain event to inform that a sale was modified
-        AddDomainEvent(new SaleModifiedDomainEvent(Id));
     }
 
     public void Cancel()
@@ -63,10 +53,18 @@ public class Sale : BaseEntity
         AddDomainEvent(new SaleCancelledDomainEvent(Id));
     }
 
+    public void CalculateTotals()
+    {
+        CalculateTotalDiscount();
+        CalculateTotalAmount();
+
+        // Create domain event to inform that a sale as updated
+        AddDomainEvent(new SaleModifiedDomainEvent(Id));
+    }
+
     private void CalculateTotalDiscount()
     {
-        Discount = _items.Where(f => !f.IsCanceled).Sum(f => f.Discount);
-        CalculateTotalAmount();
+        Discount = _items.Where(f => !f.IsCanceled).Sum(f => f.Discount);        
     }
 
     private void CalculateTotalAmount()

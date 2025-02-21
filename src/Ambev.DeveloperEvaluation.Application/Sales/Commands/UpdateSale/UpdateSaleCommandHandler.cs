@@ -80,6 +80,8 @@ public class UpdateSaleCommandHandler : IRequestHandler<UpdateSaleCommand, Resul
             sale.UpdateItem(commandItem.ProductId, commandItem.Quantity, commandItem.Price);
         }
 
+        sale.CalculateTotals();
+
         // Repository operation
         var updatedSale = await _saleRepository.UpdateAsync(sale, cancellationToken);
 
