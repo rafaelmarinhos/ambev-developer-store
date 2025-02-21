@@ -9,9 +9,9 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.Events;
 /// </summary>
 public class ItemCanceledDomainEventHandler : INotificationHandler<ItemCancelledDomainEvent>
 {
-    private readonly ILogger _logger;
+    private readonly ILogger<ItemCanceledDomainEventHandler> _logger;
 
-    public ItemCanceledDomainEventHandler(ILogger logger)
+    public ItemCanceledDomainEventHandler(ILogger<ItemCanceledDomainEventHandler> logger)
     {
         _logger = logger;
     }

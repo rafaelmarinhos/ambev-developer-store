@@ -9,9 +9,9 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.Events;
 /// </summary>
 public class SaleCanceledDomainEventHandler : INotificationHandler<SaleCancelledDomainEvent>
 {
-    private readonly ILogger _logger;
+    private readonly ILogger<SaleCanceledDomainEventHandler> _logger;
 
-    public SaleCanceledDomainEventHandler(ILogger logger)
+    public SaleCanceledDomainEventHandler(ILogger<SaleCanceledDomainEventHandler> logger)
     {
         _logger = logger;
     }
@@ -22,8 +22,8 @@ public class SaleCanceledDomainEventHandler : INotificationHandler<SaleCancelled
 
         _logger.LogInformation(
             "{Handler} | Sale canceled | Sale: {SaleId}",
-            nameof(ItemCanceledDomainEventHandler),
-            notification.SaleId            
+            nameof(SaleCanceledDomainEventHandler),
+            notification.SaleId
         );
 
         await Task.CompletedTask;

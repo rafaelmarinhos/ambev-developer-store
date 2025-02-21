@@ -27,7 +27,6 @@ public static class LoggingExtension
     /// </summary>
     static readonly Func<LogEvent, bool> _filterPredicate = exclusionPredicate =>
     {
-
         if (exclusionPredicate.Level != LogEventLevel.Information) return true;
 
         exclusionPredicate.Properties.TryGetValue("StatusCode", out var statusCode);
