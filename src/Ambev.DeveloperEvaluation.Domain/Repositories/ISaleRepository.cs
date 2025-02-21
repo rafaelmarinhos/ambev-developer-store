@@ -29,5 +29,13 @@ public interface ISaleRepository
     /// <param name="id">The unique identifier of the sale</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The updated sale</returns>
-    Task<Sale> UpdateAsync(Sale sale, CancellationToken cancellationToken = default);  
+    Task<Sale> UpdateAsync(Sale sale, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Cancel a sale by their unique identifier
+    /// </summary>
+    /// <param name="id">The unique identifier of the sale</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The canceled sale</returns>
+    Task<Sale> CancelAsync(Sale sale, CancellationToken cancellationToken = default);
 }

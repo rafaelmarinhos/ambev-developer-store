@@ -55,6 +55,14 @@ public class Sale : BaseEntity
         AddDomainEvent(new SaleModifiedDomainEvent(Id));
     }
 
+    public void Cancel()
+    {
+        Cancelled = true;
+
+        // Create domain evento to inform that a sale was canceled
+        AddDomainEvent(new SaleCancelledDomainEvent(Id));
+    }
+
     private void CalculateTotalDiscount()
     {
         Discount = _items.Where(f => !f.IsCanceled).Sum(f => f.Discount);

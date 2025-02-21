@@ -71,4 +71,17 @@ public class SaleRepository : ISaleRepository
         await _context.SaveChangesAsync(cancellationToken);
         return sale;
     }
+
+    /// <summary>
+    /// Cancel a existing sale in the database
+    /// </summary>
+    /// <param name="sale">The sale to update</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The canceled sale</returns>
+    public async Task<Sale> CancelAsync(Sale sale, CancellationToken cancellationToken)
+    {
+        _context.Entry(sale).Property(p => p.Cancelled).IsModified = true;
+        await _context.SaveChangesAsync(cancellationToken);
+        return sale;
+    }
 }
