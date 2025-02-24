@@ -54,7 +54,6 @@ public class SaleRepository : ISaleRepository
     /// <returns>The update sale</returns>
     public async Task<Sale> UpdateAsync(Sale sale, CancellationToken cancellationToken)
     {
-        // TODO: Corrigir esta tratativa
         foreach (var item in sale.Items)
         {
             if (item.UpdatedAt == null)
