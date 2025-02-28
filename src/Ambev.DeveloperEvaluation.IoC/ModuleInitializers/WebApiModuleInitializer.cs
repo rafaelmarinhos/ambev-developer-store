@@ -1,9 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.Common.Security;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Ambev.DeveloperEvaluation.IoC.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace Ambev.DeveloperEvaluation.IoC.ModuleInitializers
 {
@@ -13,6 +10,8 @@ namespace Ambev.DeveloperEvaluation.IoC.ModuleInitializers
         {
             builder.Services.AddControllers();
             builder.Services.AddHealthChecks();
+            builder.Services.AddSwaggerConfiguration();
+            builder.Services.AddCorsConfiguration();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.Commands.CreateSale;
 using Ambev.DeveloperEvaluation.Application.Sales.Commands.DeleteSale;
+using Ambev.DeveloperEvaluation.Application.Sales.Commands.GetAllSales;
 using Ambev.DeveloperEvaluation.Application.Sales.Commands.GetSale;
 using Ambev.DeveloperEvaluation.Application.Sales.Commands.UpdateSale;
 using Ambev.DeveloperEvaluation.Common.Validation;
@@ -38,6 +39,50 @@ public class SalesController : BaseController
     }
 
     /// <summary>
+    /// Retrieves all sales
+    /// </summary>    
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The sale details if found</returns>
+    [HttpGet()]
+    [ProducesResponseType(typeof(ApiResponseWithData<GetSaleResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    {
+        var request = new GetAllSalesQuery();
+        var response = await _mediator.Send(request, cancellationToken);
+        return Ok(response.Value);
+    }
+
+    /// <summary>
+    /// Retrieves a sale by their ID
+    /// </summary>
+    /// <param name="id">The unique identifier of the sale</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The sale details if found</returns>
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(ApiResponseWithData<GetSaleResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetSale([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        var request = new GetSaleRequest { Id = id };
+        var command = _mapper.Map<GetSaleCommand>(request);
+        var response = await _mediator.Send(command, cancellationToken);
+
+        if (response.IsFailed)
+        {
+            return BadRequest(new ApiResponse()
+            {
+                Success = false,
+                Message = "Error on retrieved sale",
+                Errors = response.Errors.Select(error => new ValidationErrorDetail { Error = error.Message }).ToList()
+            });
+        }
+
+        return Ok(_mapper.Map<GetSaleResponse>(response.Value), "Sale retrieved successfully");
+    }
+
+    /// <summary>
     /// Creates a new sale
     /// </summary>
     /// <param name="request">The sale creation request</param>
@@ -70,35 +115,6 @@ public class SalesController : BaseController
             Message = "Sale created successfully",
             Data = _mapper.Map<CreateSaleResponse>(response.Value)
         });
-    }
-
-    /// <summary>
-    /// Retrieves a sale by their ID
-    /// </summary>
-    /// <param name="id">The unique identifier of the sale</param>
-    /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>The sale details if found</returns>
-    [HttpGet("{id}")]
-    [ProducesResponseType(typeof(ApiResponseWithData<GetSaleResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetSale([FromRoute] Guid id, CancellationToken cancellationToken)
-    {
-        var request = new GetSaleRequest { Id = id };
-        var command = _mapper.Map<GetSaleCommand>(request);
-        var response = await _mediator.Send(command, cancellationToken);
-
-        if (response.IsFailed)
-        {
-            return BadRequest(new ApiResponse()
-            {
-                Success = false,
-                Message = "Error on retrieved sale",
-                Errors = response.Errors.Select(error => new ValidationErrorDetail { Error = error.Message }).ToList()
-            });
-        }
-
-        return Ok(_mapper.Map<GetSaleResponse>(response.Value), "Sale retrieved successfully");
     }
 
     /// <summary>
@@ -148,7 +164,7 @@ public class SalesController : BaseController
     /// <param name="id">The unique identifier of the sale</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The sale details if found</returns>
-    [HttpPatch("{id}")]
+    [HttpPost("{id}/cancel")]
     [ProducesResponseType(typeof(ApiResponseWithData<GetSaleResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]

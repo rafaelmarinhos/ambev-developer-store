@@ -34,6 +34,16 @@ public class SaleRepository : ISaleRepository
     }
 
     /// <summary>
+    /// Retrieves all sales
+    /// </summary>    
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The all sale if found</returns>
+    public async Task<IEnumerable<Sale>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.Sales.Include(o => o.Items).ToListAsync(cancellationToken);
+    }
+
+    /// <summary>
     /// Retrieves a sale by their unique identifier
     /// </summary>
     /// <param name="id">The unique identifier of the sale</param>
